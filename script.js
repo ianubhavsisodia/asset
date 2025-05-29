@@ -1,4 +1,3 @@
-
 var promoCode = "";
 var audio = $('#audio')[0];
 var isScratching = false;
@@ -21,7 +20,6 @@ function callScratchPad() {
             if (percent > 50 && result.win !== "no") {
                 document.querySelector(".screen-main").classList.remove("show");
                 document.querySelector(".winScreen").classList.add("show");
-                updateCTAButton(promoCode);
             } else if (percent > 80 && result.win === "no") {
                 document.querySelector(".screen-main").classList.remove("show");
                 document.querySelector(".loseScreen").classList.add("show");
@@ -94,6 +92,11 @@ if (result.win === "no") {
     document.querySelector(".scratchContainer .scratchpad").style.backgroundSize = "cover";
     document.querySelector(".scratchContainer .scratchpad").innerHTML = `<code><p>You won</p><p id='promoCodeDisplay'><b>${result.code}</b></p></code>`;
     promoCode = result.code;
+
+    // ✅ Update win screen and CTA button
+    document.getElementById('promoCodeDisplay').innerText = result.code;
+    updateCTAButton(result.code);
+
     try {
         weNotification.trackEvent(
             "In-app Template - Card Scratched",
