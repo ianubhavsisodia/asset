@@ -20,6 +20,12 @@ function callScratchPad() {
             if (percent > 50 && result.win !== "no") {
                 document.querySelector(".screen-main").classList.remove("show");
                 document.querySelector(".winScreen").classList.add("show");
+                
+                // Update CTA Button with promo code here
+                console.log('Updating CTA with promoCode:', promoCode);
+                updateCTAButton(promoCode);
+                console.log('New CTA href:', document.getElementById("cta1").href);
+
             } else if (percent > 80 && result.win === "no") {
                 document.querySelector(".screen-main").classList.remove("show");
                 document.querySelector(".loseScreen").classList.add("show");
@@ -73,11 +79,15 @@ async function copyCode() {
 
 var result = weightedRandom(DATA);
 
+// Assign promoCode as soon as result is decided!
+promoCode = result.code;
+
 if (result.win === "no") {
     document.querySelector(".scratchContainer .scratchpad").style.backgroundImage = "url('https://d3gfjdwfdb7zi0.cloudfront.net/in-app-scratch/assets/lose.png')";
     document.querySelector(".scratchContainer .scratchpad").style.backgroundSize = "cover";
     document.querySelector(".scratchContainer .scratchpad").innerHTML = `<p>Better luck next time!</p>`;
-    promoCode = "";
+    promoCode = ""; // no promo code for lose
+    
     try {
         weNotification.trackEvent(
             "In-app Template - Card Scratched",
@@ -91,11 +101,6 @@ if (result.win === "no") {
     document.querySelector(".scratchContainer .scratchpad").style.backgroundImage = "url('https://d3gfjdwfdb7zi0.cloudfront.net/in-app-scratch/assets/Won.png')";
     document.querySelector(".scratchContainer .scratchpad").style.backgroundSize = "cover";
     document.querySelector(".scratchContainer .scratchpad").innerHTML = `<code><p>You won</p><p id='promoCodeDisplay'><b>${result.code}</b></p></code>`;
-    promoCode = result.code;
-
-    // ✅ Update win screen and CTA button
-    document.getElementById('promoCodeDisplay').innerText = result.code;
-    updateCTAButton(result.code);
 
     try {
         weNotification.trackEvent(
